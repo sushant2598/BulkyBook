@@ -110,7 +110,7 @@ namespace BulkyBook.Areas.Identity.Pages.Account
                 {
                     Input = new InputModel
                     {
-                        Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                        Email = info.Principal.FindFirstValue(ClaimTypes.Email),
                         Name = info.Principal.FindFirstValue(ClaimTypes.Name)
                     };
                 }
