@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using YourAppName.Models;
+using BulkyBook.Models;
+using BulkyBook.DataAccess.Data;
 
 [assembly: HostingStartup(typeof(BulkyBook.Areas.Identity.IdentityHostingStartup))]
 namespace BulkyBook.Areas.Identity
@@ -17,7 +18,7 @@ namespace BulkyBook.Areas.Identity
             builder.ConfigureServices((context, services) => {
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(
-                        context.Configuration.GetConnectionString("ApplicationDbContextConnection")));
+                        context.Configuration.GetConnectionString("DefaultConnection")));
 
                 /*services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddEntityFrameworkStores<ApplicationDbContext>();*/
