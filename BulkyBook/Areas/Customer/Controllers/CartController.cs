@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
+using Stripe;
 //using Stripe;
 //using Twilio;
 //using Twilio.Rest.Api.V2010.Account;
@@ -133,7 +134,7 @@ namespace BulkyBook.Areas.Customer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        /*public IActionResult Summary()
+        public IActionResult Summary()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -141,18 +142,14 @@ namespace BulkyBook.Areas.Customer.Controllers
             ShoppingCartVM = new ShoppingCartVM()
             {
                 OrderHeader = new Models.OrderHeader(),
-                ListCart = _unitOfWork.ShoppingCart.GetAll(c => c.ApplicationUserId == claim.Value,
-                                                            includeProperties: "Product")
+                ListCart = _unitOfWork.ShoppingCart.GetAll(c => c.ApplicationUserId == claim.Value, includeProperties: "Product")
             };
 
-            ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser
-                                                            .GetFirstOrDefault(c => c.Id == claim.Value,
-                                                                includeProperties: "Company");
+            ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(c => c.Id == claim.Value, includeProperties: "Company");
 
             foreach (var list in ShoppingCartVM.ListCart)
             {
-                list.Price = SD.GetPriceBasedOnQuantity(list.Count, list.Product.Price,
-                                                    list.Product.Price50, list.Product.Price100);
+                list.Price = SD.GetPriceBasedOnQuantity(list.Count, list.Product.Price, list.Product.Price50, list.Product.Price100);
                 ShoppingCartVM.OrderHeader.OrderTotal += (list.Price * list.Count);
             }
             ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
@@ -172,13 +169,9 @@ namespace BulkyBook.Areas.Customer.Controllers
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser
-                                                            .GetFirstOrDefault(c => c.Id == claim.Value,
-                                                                    includeProperties: "Company");
+            ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(c => c.Id == claim.Value, includeProperties: "Company");
 
-            ShoppingCartVM.ListCart = _unitOfWork.ShoppingCart
-                                        .GetAll(c => c.ApplicationUserId == claim.Value,
-                                        includeProperties: "Product");
+            ShoppingCartVM.ListCart = _unitOfWork.ShoppingCart.GetAll(c => c.ApplicationUserId == claim.Value, includeProperties: "Product");
 
             ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
             ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
@@ -190,8 +183,7 @@ namespace BulkyBook.Areas.Customer.Controllers
 
             foreach (var item in ShoppingCartVM.ListCart)
             {
-                item.Price = SD.GetPriceBasedOnQuantity(item.Count, item.Product.Price,
-                    item.Product.Price50, item.Product.Price100);
+                item.Price = SD.GetPriceBasedOnQuantity(item.Count, item.Product.Price, item.Product.Price50, item.Product.Price100);
                 OrderDetails orderDetails = new OrderDetails()
                 {
                     ProductId = item.ProductId,
@@ -203,7 +195,6 @@ namespace BulkyBook.Areas.Customer.Controllers
                 _unitOfWork.OrderDetails.Add(orderDetails);
 
             }
-
             _unitOfWork.ShoppingCart.RemoveRange(ShoppingCartVM.ListCart);
             _unitOfWork.Save();
             HttpContext.Session.SetInt32(SD.ssShoppingCart, 0);
@@ -248,12 +239,11 @@ namespace BulkyBook.Areas.Customer.Controllers
             _unitOfWork.Save();
 
             return RedirectToAction("OrderConfirmation", "Cart", new { id = ShoppingCartVM.OrderHeader.Id });
-
         }
 
         public IActionResult OrderConfirmation(int id)
         {
-            OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == id);
+            /*OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == id);
             TwilioClient.Init(_twilioOptions.AccountSid, _twilioOptions.AuthToken);
             try
             {
@@ -266,8 +256,8 @@ namespace BulkyBook.Areas.Customer.Controllers
             catch (Exception ex)
             {
 
-            }
+            }*/
             return View(id);
-        }*/
+        }
     }
 }
