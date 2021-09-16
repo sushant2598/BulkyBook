@@ -129,7 +129,7 @@ namespace BulkyBook.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        /*public IActionResult UpdateOrderDetails()
+        public IActionResult UpdateOrderDetails()
         {
             var orderHEaderFromDb = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == OrderVM.OrderHeader.Id);
             orderHEaderFromDb.Name = OrderVM.OrderHeader.Name;
@@ -150,7 +150,7 @@ namespace BulkyBook.Areas.Admin.Controllers
             _unitOfWork.Save();
             TempData["Error"] = "Order Details Updated Successfully.";
             return RedirectToAction("Details", "Order", new { id = orderHEaderFromDb.Id });
-        }*/
+        }
 
 
         #region API CALLS
